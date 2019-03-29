@@ -11,19 +11,20 @@
 <body onload="document.getElementById('DefaultTab').click();">
 <!-- Tab links -->
 <div class="tab">
-  <button class="tablinks active" onclick="openTab(event, 'TAB1')" id="DefaultTab">Home</button>
-  <button class="tablinks" onclick="openTab(event, 'TAB2')">SAP Self Study</button>
+  <button class="tablinks" onclick="openTab(event, 'TAB1')">Home</button>
+  <button class="tablinks active" onclick="openTab(event, 'TAB2')" id="DefaultTab">SAP Self Study</button>
   <button class="tablinks" onclick="openTab(event, 'TAB3')">About Me</button>
 </div>
 
 <!-- Tab content -->
 <div id="TAB1" class="tabcontent">
   <h3>Home</h3>
+ <div w3-include-html="content_SAP.html"></div>
 </div>
 
 <div id="TAB2" class="tabcontent">
   <h3>SAP Self Study</h3>
- <p><a href="content1.html">Display CDS view in ALV</a></p>
+<p>Display CDS view in ALV</p>
 </div>
 
 <div id="TAB3" class="tabcontent">
@@ -32,7 +33,9 @@
 </div>
 
 
+
 <script src="javascript1.js">
+includeHTML();
 </script>
 
 </body>
