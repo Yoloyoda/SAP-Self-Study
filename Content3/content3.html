@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>SAP Self Study</title>
+<font face = "Calibri">
+<h1>SAP Self Study</h1>
+</font>
+<link rel="stylesheet" href="../css1.css">
+</head>
+<body onload="document.getElementById('DefaultTab').click();">
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'TAB2')" id="DefaultTab">SAP Self Study</button>
+</div>
+
+<!-- Tab content -->
+<div id="TAB2" class="tabcontent">
+  <h3>Mass-downloading table records to local</h3>
+<form>
+  <input type="button" value="Go back" onclick="history.back()">
+</form>  
+<p>Downloading massive data from SAP GUI can be such a hassle. The consequence of waiting for SE16n to display all the data</br>
+ can sometimes only lead to short dumps. Here I wrote down some tips to download data to your local PC.</p>
+ 
+ <p>1. No ALV</br>
+ Use SE11, SE12 to display data because ALV display in SE16n/SE16h is not meant for large dataset. Select your table and go to contents,
+ from "Setting" and go to "User Parameters". Choose "Standard SE16 list" and display data. Once data is displayed, System->List->Save.
+ </p>
+ <img src="content3_img1.PNG" alt="image1">
+ <img src="content3_img2.PNG" alt="image2">
+
+<p>2. Choose only the necessary colums</br>
+ From SE11, SE12, choose only the necessary colums by Settings->Format List->Choose fields.
+ </p>
+ <img src="content3_img3.PNG" alt="image3">
+ 
+ <p>2. SQVI, export as local file</br>
+ Create SQVI and from its basic mode, you see export mode can be changed. Choose excel and execute the quick viewer. 
+ Execute again after setting selection screen. It will prompt you the number of rows and you can put maximum of 999,999 records.
+ Specify the local path and encoding and voila! It's in your local path in the blink of an eye!
+ </p>
+ <img src="content3_img4.PNG" alt="image4">
+ <img src="content3_img5.PNG" alt="image5">
+</div>
+
+<script src="../js/javascript1.js">
+includeHTML();
+</script>
+
+</body>
+<footer class="footer">
+  <p>Posted by: SAP Self Study</p>
+  <p>© 2019 SAP Self Study All Rights Reserved</p>
+</footer>
+</html>

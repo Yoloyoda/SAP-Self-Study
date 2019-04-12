@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>SAP Self Study</title>
+<font face = "Calibri">
+<h1>SAP Self Study</h1>
+</font>
+<link rel="stylesheet" href="../css1.css">
+</head>
+<body onload="document.getElementById('DefaultTab').click();">
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'TAB2')" id="DefaultTab">SAP Self Study</button>
+</div>
+
+<!-- Tab content -->
+<div id="TAB2" class="tabcontent">
+  <h3>Calling CDS view with parameters from ABAP</h3>
+<form>
+  <input type="button" value="Go back" onclick="history.back()">
+</form>  
+<p>CDS view can be used in many differne occasions. This self study session demonstrates calling CDS views from ABAP programs. </br>
+I created two CDS views, "YCSV_SASAKI" and "ZCDS_TEST1" with a parameter. They can be called using Open SQL such as below: </p>
+
+<pre><code>
+SELECT * FROM YCSV_SASAKI
+         INTO TABLE @DATA(LIT_DATA)
+  .
+
+*Call CDS view with a parameter
+SELECT * FROM ZCDS_TEST1( P_DISPLAYCURRENCY = 'EUR' )
+         INTO TABLE @DATA(LIT_DATA2)
+  .
+</code></pre>
+
+<p>
+The results are stored in the internal table.
+</p>
+
+<img src="content1_img1.PNG" alt="Call CDS debug">
+
+<p>
+If you need ALV display, it's done by using Class "CL_SALV_GUI_TABLE_IDA".
+</p>
+
+<pre><code>
+DATA: GO_ALV_IDA TYPE REF TO IF_SALV_GUI_TABLE_IDA.
+
+*Display CDS without parameter in ALV
+TRY.
+    CL_SALV_GUI_TABLE_IDA=>CREATE_FOR_CDS_VIEW( IV_CDS_VIEW_NAME = 'ZCDS_TEST2' )->FULLSCREEN( )->DISPLAY( ).
+  CATCH CX_ROOT.
+
+ENDTRY.
+
+*Display CDS with parameters in ALV
+GO_ALV_IDA = CL_SALV_GUI_TABLE_IDA=>CREATE_FOR_CDS_VIEW( IV_CDS_VIEW_NAME = 'ZCDS_TEST1' ).
+GO_ALV_IDA->SET_VIEW_PARAMETERS( VALUE #( ( NAME = 'P_DISPLAYCURRENCY' VALUE = |JPY| ) ) ).
+GO_ALV_IDA->FULLSCREEN( )->DISPLAY( ).
+</code></pre>
+
+<p>
+The result will displays data in ALV twice.
+</p>
+
+<img src="content1_img2.PNG" alt="Call CDS alv1">
+<img src="content1_img3.PNG" alt="Call CDS alv2">
+
+<p>
+Thus, calling CDS views is simple and it comes in handy if you want to achieve code pushdown methodology with ABAP CDS built in functions.
+</p>
+</div>
+
+<script src="../js/javascript1.js">
+includeHTML();
+</script>
+
+</body>
+<footer class="footer">
+  <p>Posted by: SAP Self Study</p>
+  <p>© 2019 SAP Self Study All Rights Reserved</p>
+</footer>
+</html>

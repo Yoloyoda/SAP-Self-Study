@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset='utf-8'>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
+<title>SAP Self Study</title>
+<font face = "Calibri">
+<h1>SAP Self Study</h1>
+</font>
+    <link rel="stylesheet" href="css1.css">
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/templatemo-style.css" />
+</head>
+<body onload="document.getElementById('DefaultTab').click();">
+
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'TAB1')" id="DefaultTab">Home</button>
+  <button class="tablinks" onclick="openTab(event, 'TAB2')">Today's music</button>
+  <button class="tablinks" onclick="location.href='./Profile.html'">Profile</button>  
+</div>
+
+<!-- Welcome Section -->
+    <section id="tmWelcome" class="parallax-window" data-parallax="scroll" <!--data-image-src="img/mini-profile-bg-01.jpg"-->>
+      <div class="container-fluid tm-brand-container-outer">
+        <div class="row">
+          <div class="col-5">
+            <!-- Logo Area -->
+            <!-- Black transparent bg -->
+            <div class="ml-auto mr-0 tm-bg-black-transparent text-white tm-brand-container-inner">
+              <div class="tm-brand-container text-center">
+                <h1 class="tm-brand-name">Yoloyoda</h1>
+                <p class="tm-brand-description mb-0">SAP Self Study</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 tm-welcome-left-col">
+              <div class="tm-welcome-left">
+                <h2 class="tm-welcome-title">Welcome to Yoloyoda's SAP Self Study</h2>
+                <p class="pb-0">
+                  This website aims to share useful tricks and solution for problems I had over the years with SAP and ABAP.
+                  I needed a platform to look back on those solutions in case I forget them so I created one:)</p>
+              </div>
+          </div>		  
+        </div>
+      </div>
+    </section>
+    <!-- End Welcome section -->
+
+<!-- Tab content -->
+<div id="TAB1" class="tabcontent">
+  <h3>Topics:</h3>
+
+ <p><a href="content1/content1.html">Calling CDS view with parameters from ABAP</a>&nbsp;&nbsp;<font size="1.5">Posted 2019/03/29</font></p>
+ <p><a href="content2/content2.html">Editting records of tables that are not editable</a>&nbsp;&nbsp;<font size="1.5">Posted 2019/04/01</font></p>
+ <p><a href="content3/content3.html">Mass-downloading table records to local</a>&nbsp;&nbsp;<font size="1.5">Posted 2019/04/10</font></p>
+</div>
+
+<div id="TAB2" class="tabcontent">
+  <h3>Today's music</h3>
+  <p>Here I share songs that are oldies but goldies. Thinking about SAP 24/7 might hurt your brain sometimes:)</p>
+</div>
+
+<div id="TAB3" class="tabcontent">
+  <h3>Profile</h3>
+  <p><a href="Profile.html">Editting records of tables that are not editable</a></p>  
+  <p>An ABAP developer working mostly with report, interface, exit, using BAPI, BADI, Dynpro, etc.</p>
+</div>
+
+
+<script src="js/javascript1.js">
+</script>
+
+</body>
+
+<footer class="footer">
+  <p>Posted by: SAP Self Study</p>
+  <p>© 2019 SAP Self Study All Rights Reserved</p>
+</footer>
+</html>
