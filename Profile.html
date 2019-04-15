@@ -2,18 +2,24 @@
 <html>
 <meta charset='utf-8'>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />	
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
 <title>SAP Self Study</title>
 <font face = "Calibri">
 <h1>SAP Self Study</h1>
 </font>
 <link rel="stylesheet" href="css1.css">
+<link rel="stylesheet" href="css/all.min.css" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/templatemo-style.css" />
 </head>
 <body onload="document.getElementById('DefaultTab').click();">
 <!-- Tab links -->
 <div class="tab">
-  <button class="tablinks active" onclick="location.href='./Index.html'">Home</button>
-  <button class="tablinks" onclick="openTab(event, 'TAB2')">Today's music</button>
-  <button class="tablinks" onclick="openTab(event, 'TAB3')"id="DefaultTab">Profile</button>  
+  <button class="tablinks" onclick="location.href='./Index.html'">Home</button>
+  <button class="tablinks" onclick="location.href='./8tracks.html'">8 tracks</button>
+  <button class="tablinks active" onclick="openTab(event, 'TAB3')"id="DefaultTab">Profile</button>
 </div>
 
 <!-- Tab content -->
@@ -25,7 +31,7 @@
   <li>From</li>
   <p>Tokyo</p>
   <li>SAP favorite modules</li>
-  <p>ABAP, SD, MM,Fiori</p>
+  <p>ABAP,SD,MM,Fiori</p>
   <li>Want to learn</li>  
   <p>UI5 fiori development, SAP Leonardo</p>
   <li>Favorite trip destinations</li>
@@ -35,8 +41,7 @@
   <p>An ABAP developer working mostly with report, interface, exit, using BAPI, BADI, Dynpro, etc.</p>
 </div>
 
-
-<script src="javascript1.js">
+<script src="js/javascript1.js">
 </script>
 
 </body>

@@ -77,7 +77,7 @@ a:hover {
 }
 
 .tm-brand-container-outer {
-  margin-top: -400px;
+  margin-top: 50px;
 }
 
 .tm-brand-container-inner {
@@ -98,7 +98,7 @@ a:hover {
 }
 
 .parallax-window {
-  min-height: 1100px;
+  min-height: 200px;
   background: transparent;
 }
 

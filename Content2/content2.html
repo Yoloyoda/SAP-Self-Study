@@ -21,6 +21,38 @@
   <input type="button" value="Go back" onclick="history.back()">
 </form>  
 
+<p>When your client is admistered, basis team will configure whether users are allowed to edit cross-client and client-specific objects.
+If the changesd are set as allowed, you can edit the customize tables and your custome tables. 
+</br>
+<img src="content2_img1.PNG" alt="SCC4"></br>
+However, in the production system, the parameters are usually set as "No changes allowed". You almost never edit your customize tables in the production system
+because in order to keep your table data compatibile with your quality assurance client and development client, you usually transport the changes from 
+DEV system->QAS system->PRD system.
+</br>
+</br>
+But custom transactional tables doesn't necessary be compatible with other instances. In some occasions you need to make changes to your 
+custom transactional tables in the production system
+despite being prohibited by the setting in SCC4. In order to do this, I will demonstarate a loophole to resolve this.</br>
+</br>
+</br>
+<b>Steps</b></br>
+We have a custom table that is not allowed to edit. </br>
+<img src="content2_img2.PNG" alt="demo1"></br>
+</br>
+Go to se16n/se16h, set the table you want to edit, enter "/h" in the command filed and execute.</br>
+<img src="content2_img3.PNG" alt="demo2"></br>
+</br>
+In the variable parameterS, enter "GD-EDIT" and "GD-SAPEDIT" and set their values to X. Perss F8 to execute.
+<img src="content2_img4.PNG" alt="demo3"></br>
+</br>
+As easy as that, the table data is editable. Key fields are not editable so you need to delete and insert new rows.</br>
+<img src="content2_img5.PNG" alt="demo4"></br>
+</br>
+</br>
+Even though this is a quick solution, there is one thing to note. </br>
+You should never use this to standard/customize tables because it will cause incompatibility with other related tables.
+</p>
+
 </div>
 
 <script src="../js/javascript1.js">
