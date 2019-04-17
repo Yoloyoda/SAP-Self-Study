@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>SAP Self Study</title>
+<font face = "Calibri">
+<h1>SAP Self Study</h1>
+</font>
+<link rel="stylesheet" href="../css1.css">
+</head>
+<body onload="document.getElementById('DefaultTab').click();">
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'TAB2')" id="DefaultTab">SAP Self Study</button>
+</div>
+
+<!-- Tab content -->
+<div id="TAB2" class="tabcontent">
+  <h3>Debugging in background mode</h3>
+<form>
+  <input type="button" value="Go back" onclick="history.back()">
+</form>  
+<p>Hi today I would like to share how to debug programs that are running in background.
+ Some might already know that programs can be debugged from SE38 by either entering "/h" or navigating from menu bars to execute as debugging mode.
+ However, since executing in background mode will not be able to do either of them.</br>
+ So here are two ways to debug programs in background session.
+ </p>
+</br>
+</br>
+<p><b>Using JDBG</b></p>
+<p>GO to SE38 and enter the program in question. From Program -> Execute -> background and choose your variant if needed and press "Run Now". 
+This will schedule a background job.</p>
+ <img src="content4_img1.PNG" alt="image1">
+ </br>
+ </br>
+<p>Go to SE37 and you see the background job. Check it and enter "JDBG"(no need for /n) and enter(or simply go to Extras->Debug job). It will prompt a debug screen.
+It will not be where you think it will start but after several returns(F7), it will come to your code. Do not forget to check sy-batch for it is on!</br>
+One thing to note is that this only possible for finished jobs.
+ </p>
+ <img src="content4_img2.PNG" alt="image1"><img src="content4_img3.PNG" alt="image1">
+</br/>
+</br/>
+<p><b>Using SM50</b></p>
+<p>Same as above. GO to SE38 and enter the program in question. From Program -> Execute -> background and choose your variant if needed and press "Run Now". 
+This will schedule a background job.</br>
+Then go to SM50 and find your work process by finding your program name. Select the row, Administration -> Program -> Debug and press Yes. 
+It will prompt a debug screen. Again using returns(F7) several times to reach your programs. This doesn't have to wait for it's done but need to hurry before the work process is released.
+</p>
+<img src="content4_img4.PNG" alt="image1">
+
+</div>
+
+<script src="../js/javascript1.js">
+includeHTML();
+</script>
+
+</body>
+<footer class="footer">
+  <p>Posted by: SAP Self Study</p>
+  <p>© 2019 SAP Self Study All Rights Reserved</p>
+</footer>
+</html>
