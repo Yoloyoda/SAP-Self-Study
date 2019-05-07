@@ -21,21 +21,21 @@
   <input type="button" value="Go back" onclick="history.back()">
 </form>  
 <p>Downloading massive data from SAP GUI can be such a hassle. The consequence of waiting for SE16n to display all the data</br>
- can sometimes only lead to short dumps. Here I wrote down some tips to download data to your local PC.</p>
+ can sometimes only lead to short dumps. Here I wrote down some tips for downloading data to your local PC.</p>
  
- <p>1. No ALV</br>
+ <p><b>1. No ALV</b></br>
  Use SE11, SE12 to display data because ALV display in SE16n/SE16h is not meant for large dataset. Select your table and go to contents,
  from "Setting" and go to "User Parameters". Choose "Standard SE16 list" and display data. Once data is displayed, System->List->Save.
  </p>
  <img src="content3_img1.PNG" alt="image1">
  <img src="content3_img2.PNG" alt="image2">
 
-<p>2. Choose only the necessary colums</br>
+<p><b>2. Choose only the necessary colums</b></br>
  From SE11, SE12, choose only the necessary colums by Settings->Format List->Choose fields.
  </p>
  <img src="content3_img3.PNG" alt="image3">
  
- <p>2. SQVI, export as local file</br>
+ <p><b>3. SQVI, export as local file</b></br>
  Create SQVI and from its basic mode, you see export mode can be changed. Choose excel and execute the quick viewer. 
  Execute again after setting selection screen. It will prompt you the number of rows and you can put maximum of 999,999 records.
  Specify the local path and encoding and voila! It's in your local path in the blink of an eye!

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>SAP Self Study</title>
+<font face = "Calibri">
+<h1>SAP Self Study</h1>
+</font>
+<link rel="stylesheet" href="../css1.css">
+</head>
+<body onload="document.getElementById('DefaultTab').click();">
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'TAB2')" id="DefaultTab">SAP Self Study</button>
+</div>
+
+<!-- Tab content -->
+<div id="TAB2" class="tabcontent">
+  <h3>Perform Available to Promise(ATP) with ABAP.</h3>
+<form>
+  <input type="button" value="Go back" onclick="history.back()">
+</form>  
+<p>This post will address Available to Promise(ATP) in SD module and how it is coded into your custom programs. 
+Simply put, ATP check carries out vailability check for the stock required in sales order and it automatically 
+calculate the next available date for the material and its number of available stocks.
+For more iformation, please refer to <a href="https://help.sap.com/saphelp_46c/helpdata/en/41/191fdb45fd11d188ff0000e8322f96/frameset.htm">SAP help portal</a>.
+</P>
+
+<p>On the standard procedure, ATP is checked automatically when you enter your item information such as material number, plant and storage locations. 
+Triggering ATP will reflect the shortest available date from now to fields(e.g. Delivery date) considering the exact quantity of mateiral required in sales orders.
+However, if you change the values of, for instance, Delivery date or Schdule line category, ATP sometimes will not be triggered. 
+That means right delivery date is not relected in sales order, causing delay in delivery or stealing somebody else's stock. In that case you can manually trigger ATP checks.
+The image below shows two standard functions triggering ATP to the entire document or to specific items in transaction VA02(Sales order change).
+</P>
+</br>
+ <img src="content5_img1.PNG" alt="image1">
+</br/>
+</br/>
+
+<p>As an ABAP developer, I came across a requirement which is to trigger ATP on specific sales items in a custom program. I found a way to trigger on entire document on internet
+though could not find ways for specific items. So I hope this post will save somebody's day :)</br>
+The first snippet of code is triggered on entire document and the second code is triggered on specific items. </br>
+<pre><code>
+    CALL FUNCTION 'SD_SALES_DOCUMENT_READ'
+      EXPORTING
+        document_number = u_v_vbeln
+      IMPORTING
+        evbak           = lw_vbak
+      EXCEPTIONS
+        error_message   = 01.
+
+ CALL FUNCTION 'SD_SALES_DOCUMENT_PERFORM'
+        EXPORTING
+          in_program    = 'SAPMV45A'
+          perform       = 'FCODE_BVFP'
+        EXCEPTIONS
+          error_message = 01.
+      IF sy-subrc = 0.
+      ENDIF.
+
+      CALL FUNCTION 'SD_SALES_DOCUMENT_SAVE'
+        EXPORTING
+          synchron      = abap_true
+        IMPORTING
+          evbak         = lw_vbak
+        EXCEPTIONS
+          error_message = 01.
+      IF sy-subrc = 0.
+      ENDIF.
+
+</pre></code>
+<pre><code>
+CALL FUNCTION 'SD_SALES_DOCUMENT_READ'
+    EXPORTING
+      DOCUMENT_NUMBER = U_V_VBELN
+    IMPORTING
+      EVBAK           = LW_VBAK
+    EXCEPTIONS
+      ERROR_MESSAGE   = 01.
+
+  CALL FUNCTION 'SD_SALES_ITEM_READ'
+    EXPORTING
+      ITEM_NUMBER              = U_V_POSNR
+   IMPORTING
+     EVBAP                     = LW_VBAP
+   EXCEPTIONS
+     ITEM_NUMBER_MISSING       = 1
+     OTHERS                    = 2
+            .
+  IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+
+  CALL FUNCTION 'SD_SALES_DOCUMENT_PERFORM'
+    EXPORTING
+      IN_PROGRAM    = 'SAPMV45A'
+      PERFORM       = 'FCODE_PORE'
+    EXCEPTIONS
+      ERROR_MESSAGE = 01.
+  IF SY-SUBRC = 0.
+  ENDIF.
+
+  CALL FUNCTION 'SD_SALES_DOCUMENT_SAVE'
+    EXPORTING
+      SYNCHRON      = ABAP_TRUE
+    IMPORTING
+      EVBAK         = LW_VBAK
+    EXCEPTIONS
+      ERROR_MESSAGE = 01.
+  IF SY-SUBRC = 0.
+  ENDIF.
+
+</pre></code>
+</P>
+<p>This solution I found did not just turn up. I had to do a little dig through. When you put your cursor to the two buttons in transaction VA02(Sales order change) and press F1,
+technical information appears as pop ups screens. I found the function names are the key that leads to right routine in SAPMV45A where ATP is performed. </br>
+</br>
+ <img src="content5_img2.PNG" alt="image2">
+ <img src="content5_img3.PNG" alt="image3">
+</br/>
+Once again check the PERFORM parameter in SD_SALES_DOCUMENT_PERFORM in the above code snippets. Find something matching there? 
+</br>
+</div>
+
+<script src="../js/javascript1.js">
+includeHTML();
+</script>
+
+</body>
+<footer class="footer">
+  <p>Posted by: SAP Self Study</p>
+  <p>© 2019 SAP Self Study All Rights Reserved</p>
+</footer>
+</html>

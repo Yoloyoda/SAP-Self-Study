@@ -21,3 +21,10 @@ function openTab(evt, TabName) {
   
   document.getElementById("defaultOpen").click();  
 }
+
+
+//Custom scripts
+	function getCurrentDate(){
+		var curDate=new Date();
+		document.getElementById("CurrentDate").innerHTML = curDate.toString();
+	}

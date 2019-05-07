@@ -98,7 +98,7 @@ a:hover {
 }
 
 .parallax-window {
-  min-height: 200px;
+  min-height: 600px;
   background: transparent;
 }
 
@@ -117,10 +117,12 @@ a:hover {
 }
 
 .tm-welcome-title {
+  color: white;	
   margin-bottom: 40px;
 }
 
 .tm-welcome-left {
+  color: White;
   padding-right: 30px;
   padding-top: 50px;
   padding-bottom: 50px;
