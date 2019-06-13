@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>SAP Self Study</title>
+<font face = "Calibri">
+<h1>SAP Self Study</h1>
+</font>
+<link rel="stylesheet" href="../css1.css">
+</head>
+<body onload="document.getElementById('DefaultTab').click();">
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'TAB2')" id="DefaultTab">SAP Self Study</button>
+</div>
+
+<!-- Tab content -->
+<div id="TAB2" class="tabcontent">
+  <h3>Create excel files to a server path(AL11) without the file corrupted.</h3>
+<form>
+  <input type="button" value="Go back" onclick="history.back()">
+</form>  
+<p>This section will show you how to create excel files in a logical path in AL11 and download it without the file corrupted. The issue I faced was that 
+even though you successfully create an excel file(with extention .xlsx and such), when downloaded via CG3Y, the excel prompts the below error.</br>
+</br>
+<b><i>Excel cannot open the file 'filename.xlsx' because the file format or file extension is not valid. Verify that the file has not been corrupted and that the file extension matches the format of the file."</i></b>
+</br></br>
+There are many ways to do this but I will introduce the way I came to achived it. All credit goes to <a href="https://abapblog.com/articles/tricks/33-create-xlsx-mhtml-file-from-internal-table-in-background">this blog</a>.
+</P>
+</br>
+</br/>
+<p>Create a class and a static method with the parameters below. IM_IT_FIELDCAT has the structure LVC_T_FCAT which decides the colum names and data types and such. 
+IM_IT_SORT is for sort criteria, IM_IT_FILT sets your filter and IM_W_LAYOUT sets your excel layout(some of them doesn't work for excel though). 
+Makes sure to flag the parameter IM_V_XLSX if output needs to be .XLSX extention, unless you want it MHTML.
+</br>
+CH_IT_DATA is an changing parameter where you pass the internal table stored with your output data. Finally from EX_V_XSTRING we will get the output data in string.
+Our next step is to transfer this data of string to a server path(AL11).
+</br>
+ <img src="content6_img1.PNG" alt="image1">
+</br/>
+<p>Implement the below code inside the method.</P>
+</br/>
+<pre><code>
+  METHOD CREATE_XLS_FROM_ITAB.
+	
+    DATA: LIT_FCAT       TYPE LVC_T_FCAT,
+          LO_DATA        TYPE REF TO DATA,
+          LV_FLAVOUR     TYPE STRING,
+          LV_VERSION     TYPE STRING,
+          LO_RESULT_DATA TYPE REF TO CL_SALV_EX_RESULT_DATA_TABLE,
+          LO_COLUMNS     TYPE REF TO CL_SALV_COLUMNS_TABLE,
+          LO_AGGREG      TYPE REF TO CL_SALV_AGGREGATIONS,
+          LO_SALV_TABLE  TYPE REF TO CL_SALV_TABLE,
+          LV_FILE_TYPE   TYPE SALV_BS_CONSTANT.
+
+    FIELD-SYMBOLS <LIT_TAB> TYPE ANY TABLE.
+
+    GET REFERENCE OF CH_IT_DATA INTO LO_DATA.
+
+*if we didn't pass fieldcatalog we need to create it
+    IF IM_IT_FIELDCAT[] IS INITIAL.
+      ASSIGN LO_DATA->* TO <LIT_TAB>.
+      TRY .
+          CL_SALV_TABLE=>FACTORY(
+          EXPORTING
+            LIST_DISPLAY = ABAP_FALSE
+          IMPORTING
+            R_SALV_TABLE = LO_SALV_TABLE
+          CHANGING
+            T_TABLE      = <LIT_TAB> ).
+        CATCH CX_SALV_MSG
+               CX_ROOT ##CATCH_ALL.
+
+          "Error
+          MESSAGE
+            E026(ZAMCM01)
+          WITH
+            TEXT-001
+            SPACE
+            SPACE
+            SPACE
+          RAISING FILE_ERROR.
+      ENDTRY.
+      "get colums & aggregation infor to create fieldcat
+      LO_COLUMNS  = LO_SALV_TABLE->GET_COLUMNS( ).
+      LO_AGGREG   = LO_SALV_TABLE->GET_AGGREGATIONS( ).
+      LIT_FCAT    =  CL_SALV_CONTROLLER_METADATA=>GET_LVC_FIELDCATALOG(
+                                    R_COLUMNS      = LO_COLUMNS
+                                    R_AGGREGATIONS = LO_AGGREG ).
+    ELSE.
+*else we take the one we passed
+      LIT_FCAT[] = IM_IT_FIELDCAT[].
+    ENDIF.
+
+
+    IF CL_SALV_BS_A_XML_BASE=>GET_VERSION( ) EQ IF_SALV_BS_XML=>VERSION_25 OR
+       CL_SALV_BS_A_XML_BASE=>GET_VERSION( ) EQ IF_SALV_BS_XML=>VERSION_26.
+
+      LO_RESULT_DATA = CL_SALV_EX_UTIL=>FACTORY_RESULT_DATA_TABLE(
+          R_DATA                      = LO_DATA
+          S_LAYOUT                    = IM_W_LAYOUT
+          T_FIELDCATALOG              = LIT_FCAT
+          T_SORT                      = IM_IT_SORT
+          T_FILTER                    = IM_IT_FILT
+      ).
+
+      CASE CL_SALV_BS_A_XML_BASE=>GET_VERSION( ).
+        WHEN IF_SALV_BS_XML=>VERSION_25.
+          LV_VERSION = IF_SALV_BS_XML=>VERSION_25.
+        WHEN IF_SALV_BS_XML=>VERSION_26.
+          LV_VERSION = IF_SALV_BS_XML=>VERSION_26.
+      ENDCASE.
+
+      "if we flag i_XLSX then we'll create XLSX if not then MHTML excel file
+      IF IM_V_XLSX IS NOT INITIAL.
+        LV_FILE_TYPE = IF_SALV_BS_XML=>C_TYPE_XLSX.
+      ELSE.
+        LV_FILE_TYPE = IF_SALV_BS_XML=>C_TYPE_MHTML.
+      ENDIF.
+
+
+      LV_FLAVOUR = IF_SALV_BS_C_TT=>C_TT_XML_FLAVOUR_EXPORT.
+      "transformation of data to excel
+      CALL METHOD CL_SALV_BS_TT_UTIL=>IF_SALV_BS_TT_UTIL~TRANSFORM
+        EXPORTING
+          XML_TYPE      = LV_FILE_TYPE
+          XML_VERSION   = LV_VERSION
+          R_RESULT_DATA = LO_RESULT_DATA
+          XML_FLAVOUR   = LV_FLAVOUR
+          GUI_TYPE      = IF_SALV_BS_XML=>C_GUI_TYPE_GUI
+        IMPORTING
+          XML           = EX_V_XSTRING.
+    ENDIF.
+
+  ENDMETHOD.
+</pre></code>
+</br>
+<p>Our final peice of code needs to open the file path in order to place a file, transfer data and close what we opened.
+Implement error handling as you like by checking SUBRC for all three statements. P_PATH should contain "Directory name" + "file name" + ".xlsx". 
+"Directory name" is found in AL11, which usually starts with "/".
+</p>
+<pre><code>
+  OPEN DATASET P_PATH FOR OUTPUT IN BINARY MODE.
+
+  IF SY-SUBRC = 0.
+    TRANSFER G_XSTRING TO P_PATH.
+    CLOSE DATASET P_PATH.
+  ENDIF.
+</pre></code>
+</br>
+<p>Download with CG3Y to local and you should be able to display the data without any errors prompted. </br>
+The whole code will look like this. Rest of the code should be self-explanatory.
+</p>
+<pre><code>
+*&---------------------------------------------------------------------*
+*& Report YDOWNLOAD_EXCEL
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT YDOWNLOAD_EXCEL.
+
+DATA: GT_SPFLI TYPE STANDARD TABLE OF ZO2CT041.
+DATA: G_XSTRING TYPE XSTRING.
+DATA: G_PATH TYPE STRING.
+"get path
+PARAMETERS:
+  P_PATH TYPE STRING.
+
+START-OF-SELECTION.
+
+TRANSLATE P_PATH TO LOWER CASE.
+  "fill table with data
+  SELECT * FROM SPFLI INTO CORRESPONDING FIELDS OF TABLE GT_SPFLI.
+
+  "call creation of xls
+  YCL_ABAPBLOG_COM=>CREATE_XLS_FROM_ITAB(
+    EXPORTING
+*    it_fieldcat       = it_fieldcat
+*    it_sort           = it_sort
+*    it_filt           = it_filt
+*    is_layout         = is_layout
+    I_XLSX             = 'X'
+    IMPORTING
+      E_XSTRING         = G_XSTRING
+    CHANGING
+      CT_DATA           =  GT_SPFLI
+         ).
+
+
+  OPEN DATASET P_PATH FOR OUTPUT IN BINARY MODE.
+
+  IF SY-SUBRC = 0.
+    TRANSFER G_XSTRING TO P_PATH.
+    CLOSE DATASET P_PATH.
+  ENDIF.
+</pre></code>
+<script src="../js/javascript1.js">
+includeHTML();
+</script>
+
+</body>
+<footer class="footer">
+  <p>Posted by: SAP Self Study</p>
+  <p>© 2019 SAP Self Study All Rights Reserved</p>
+</footer>
+</html>
