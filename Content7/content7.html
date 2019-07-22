@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>SAP Self Study</title>
+<font face = "Calibri">
+<h1>SAP Self Study</h1>
+</font>
+<link rel="stylesheet" href="../css1.css">
+</head>
+<body onload="document.getElementById('DefaultTab').click();">
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks active" onclick="openTab(event, 'TAB2')" id="DefaultTab">SAP Self Study</button>
+</div>
+
+<!-- Tab content -->
+<div id="TAB2" class="tabcontent">
+  <h3>Using ABAP memory to pass on your own internal table in exit.</h3>
+<form>
+  <input type="button" value="Go back" onclick="history.back()">
+</form>  
+<p>Exits comes handy when the standard functions that don't quite provide what we require. They are the little loop holes for us to implement our own codes
+inside the standard SAP programs. You can just use the global variables and intenal tables and by changing them to suit your needs. 
+While the global vaiables and tables are there for you, you are not able to create your own global values. For example, you want to store 
+the number of times of changes and increment the value everytime the changes occur but no such variable exists (Unless you take a least used variable and 
+mark the incremented number there, which is not recomennded as it is still SAP standard variable. You never know what it is used for later in the standard code).
+I went through painstaking process and found out that you can use ABAP memory to pass your necessary values. It's like summoning a vortex and passing the value, whenever needed 
+summon the vortex again to retreat it.</br>
+In this section, I will use user exit "USEREXIT_PRICING_PREPARE_TKOMP" in program MV45AFZZ. It's triggered when price is added/changed in sales order.
+</p>
+<script src="../js/javascript1.js">
+includeHTML();
+</script>
+
+</body>
+<footer class="footer">
+  <p>Posted by: SAP Self Study</p>
+  <p>© 2019 SAP Self Study All Rights Reserved</p>
+</footer>
+</html>
