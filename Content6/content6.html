@@ -16,11 +16,11 @@
 
 <!-- Tab content -->
 <div id="TAB2" class="tabcontent">
-  <h3>Create excel files to a server path(AL11) without the file corrupted.</h3>
+  <h3>Create excel files to a server directory(AL11) without the file corrupted.</h3>
 <form>
   <input type="button" value="Go back" onclick="history.back()">
 </form>  
-<p>This section will show you how to create excel files in a logical path in AL11 and download it without the file corrupted. The issue I faced was that 
+<p>This section will show you how to create excel files in a directory in AL11 and download it without the file corrupted. The issue I faced was that 
 even though you successfully create an excel file(with extention .xlsx and such), when downloaded via CG3Y, the excel prompts the below error.</br>
 </br>
 <b><i>Excel cannot open the file 'filename.xlsx' because the file format or file extension is not valid. Verify that the file has not been corrupted and that the file extension matches the format of the file."</i></b>
@@ -34,7 +34,7 @@ IM_IT_SORT is for sort criteria, IM_IT_FILT sets your filter and IM_W_LAYOUT set
 Makes sure to flag the parameter IM_V_XLSX if output needs to be .XLSX extention, unless you want it MHTML.
 </br>
 CH_IT_DATA is an changing parameter where you pass the internal table stored with your output data. Finally from EX_V_XSTRING we will get the output data in string.
-Our next step is to transfer this data of string to a server path(AL11).
+Our next step is to transfer this data of string to a server directory(AL11).
 </br>
  <img src="content6_img1.PNG" alt="image1">
 </br/>
@@ -73,7 +73,7 @@ Our next step is to transfer this data of string to a server path(AL11).
 
           "Error
           MESSAGE
-            E026(ZAMCM01)
+            E0xx(Zxxxx)      "Your message class or any message you like
           WITH
             TEXT-001
             SPACE
@@ -159,7 +159,7 @@ The whole code will look like this. Rest of the code should be self-explanatory.
 *&---------------------------------------------------------------------*
 REPORT YDOWNLOAD_EXCEL.
 
-DATA: GT_SPFLI TYPE STANDARD TABLE OF ZO2CT041.
+DATA: GT_SPFLI TYPE SPFLI.
 DATA: G_XSTRING TYPE XSTRING.
 DATA: G_PATH TYPE STRING.
 "get path
