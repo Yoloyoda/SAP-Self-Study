@@ -25,8 +25,8 @@ inside the standard SAP programs. You can use the global variables and intenal t
 While the global vaiables and tables are there for you, you are not able to create your own global values. For example, you want to store 
 the number of times of changes and increment the value everytime the changes occur but no such variable exists (Unless you take a least used variable and 
 mark the incremented number there, which is not recomennded as it is still SAP standard variable. You never know what it is used for later in the standard code).
-I went through painstaking process and found out that you can use ABAP memory to pass your necessary values. It's like summoning a vortex and passing the value, whenever needed 
-summon the vortex again to retreat it.</br>
+I went through painstaking process and found out that you can use ABAP memory to pass your necessary values. It's like summoning a vortex and passing the value into it
+and summoning again to retreat the value, wherever and whenever needed.(*There is a constrain that the memoey will be freed at certain times but that will not be in the scope this time)</br>
 In this section, I will use user exit "USEREXIT_PRICING_PREPARE_TKOMP" in program MV45AFZZ. It's triggered when price is added/changed in sales order.
 </p>
 </br>
